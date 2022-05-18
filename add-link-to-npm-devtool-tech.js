@@ -2,9 +2,9 @@
 // @name                Add-Link-To-NPM-Devtool-Tech
 // @name:zh-CN          给npm包添加一个到NPM-Devtool-Tech的链接
 // @namespace           http://tampermonkey.net/
-// @version             0.0.1
+// @version             0.0.2
 // @description         add an link to npm devtool tech in npm package page
-// @description:zh-CN   add an link to npm devtool tech in npm package page
+// @description:zh-CN   在npm包页面添加一个到NPM-Devtool-Tech的链接
 // @author              kkopite
 // @match               https://www.npmjs.com/package/*
 // @icon                https://www.google.com/s2/favicons?sz=64&domain=www.npmjs.com
