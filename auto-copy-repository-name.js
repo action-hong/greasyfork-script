@@ -1,13 +1,15 @@
 // ==UserScript==
-// @name         Auto-Copy-Github-Repository-Name
-// @namespace    http://tampermonkey.net/
-// @version      0.0.2
-// @description  add an btn that can copy github repository name when deleteing a repository
-// @author       kkopite
-// @match        https://github.com/*
-// @require      https://code.jquery.com/jquery-3.6.0.slim.min.js
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
-// @grant        none
+// @name                Auto-Copy-Github-Repository-Name
+// @name:zh-CN          自动复制Github仓库名
+// @namespace           http://tampermonkey.net/
+// @version             0.0.3
+// @description         add an btn that can copy github repository name when deleteing a repository
+// @description:zh-CN   删除github仓库时，自动生成一个按钮复制仓库名
+// @author              kkopite
+// @match               https://github.com/*
+// @require             https://code.jquery.com/jquery-3.6.0.slim.min.js
+// @icon                https://www.google.com/s2/favicons?sz=64&domain=github.com
+// @grant               none
 // ==/UserScript==
 
 (function () {
