@@ -2,9 +2,9 @@
 // @name                leetcode提交音效
 // @name:zh-CN          leetcode提交音效
 // @namespace           http://tampermonkey.net/
-// @version             0.0.2
-// @description         leetcode提交后，提示通过或失败有不同的音效
-// @description:zh-CN   leetcode提交后，提示通过或失败有不同的音效
+// @version             0.0.3
+// @description         leetcode提交后，提示通过或失败有不同的音效(必须是新版的leetcode)
+// @description:zh-CN   leetcode提交后，提示通过或失败有不同的音效(必须是新版的leetcode)
 // @author              kkopite
 // @match               https://leetcode.cn/problems/*
 // @require             https://code.jquery.com/jquery-3.6.0.slim.min.js
