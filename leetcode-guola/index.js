@@ -2,7 +2,7 @@
 // @name                leetcode提交音效
 // @name:zh-CN          leetcode提交音效
 // @namespace           http://tampermonkey.net/
-// @version             0.0.1
+// @version             0.0.2
 // @description         leetcode提交后，提示通过或失败有不同的音效
 // @description:zh-CN   leetcode提交后，提示通过或失败有不同的音效
 // @author              kkopite
@@ -21,6 +21,7 @@
 
   const fail = [
     '解答错误',
+    '超出时间限制'
   ]
   const audio = document.createElement('audio')
   document.body.append(audio)
