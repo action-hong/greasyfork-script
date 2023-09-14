@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音频</title>
+</head>
+<body>
+  <audio controls></audio> 
+  <input type="file">
+
+  <script>
+    const audio = document.querySelector('audio')
+    const input = document.querySelector('input')
+    input.addEventListener('input', (e) => {
+      console.log(e)
+      const file = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        console.log(reader.result)
+        audio.src = reader.result
+      }
+    })
+  </script>
+</body>
+</html>
