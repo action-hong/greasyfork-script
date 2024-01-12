@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                涂鸦文档密码自动引入
 // @namespace           http://tampermonkey.net/
-// @version             0.0.1
+// @version             0.0.2
 // @description         英文简述
 // @author              kkopite
 // @match               https://wiki.tuyacn.com/share/doc/*
@@ -37,7 +37,7 @@
     }
 
     save(obj) {
-      const index = this.passwords.findIndex(a => a.id === id)
+      const index = this.passwords.findIndex(a => a.id === obj.id)
       if (index !== -1) {
         this.passwords[index] = obj
       } else {
@@ -144,7 +144,7 @@
       if (password) {
         this.ui.fillPassword(password)
       } else {
-        console.log(`error: ${id} 没有对应的密码`);
+        console.log(`error: ${this.id} 没有对应的密码`);
       }
     }
   }
