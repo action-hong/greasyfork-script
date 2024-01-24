@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                涂鸦文档密码自动引入
 // @namespace           http://tampermonkey.net/
-// @version             0.0.2
+// @version             0.0.3
 // @description         英文简述
 // @author              kkopite
 // @match               https://wiki.tuyacn.com/share/doc/*
@@ -78,23 +78,21 @@
       navigator.clipboard.writeText(password)
 
 
-      // FIXME: 不知道如何触发事件，源码里面如何处理事件监听
-      // ant-design的input使用 rc-input
-      // 该项目使用 监听 onPressEnter 事件来修改数据
-      // 因此 这里模拟 点击回车事件
-      // https://github.com/react-component/input/blob/e643b06174fe363d95f312d5ae8b41016df3bc38/src/Input.tsx#L154
-      // const e = new Event('keydown', {
-      //   bubbles: false
-      // })
-      // e.key = 'Enter'
-      // e.code = 'Enter'
-      // e.keyCode = 13
-      // input.dispatchEvent(e)
+
+      const input = this.getPasswordInput()
+      if (input) {
+        // https://stackoverflow.com/questions/23892547/what-is-the-best-way-to-trigger-change-or-input-event-in-react-js
+        // react 改写了 input.value 的 set 方法
+        // 因此需要调用这个 set 方法来改变 input 的 value值
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(input, password)
+
+        input.dispatchEvent(new Event('change', {
+          bubbles: true
+        }))
+      }
 
       // input.dispatchEvent(new Event('input', {
-      //   bubbles: true
-      // }))
-      // input.dispatchEvent(new Event('change', {
       //   bubbles: true
       // }))
     }
@@ -120,6 +118,28 @@
 
       this.ui.initBtn('保存', this._saveCurrentPassword)
       this.ui.initBtn('复制密码', this._fillCurrentPassword)
+
+      const password = this.pm.getPassword(this.id)
+
+      // 页面挂载后，马上给input填上密码，但过一会会自动又变为空，因此这里做个判断，如果密码不一样，就再重新填一次
+      const observer = new MutationObserver((mutationsList, observer) => {
+        console.log('mutationsList', mutationsList)
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes') {
+            if (mutation.attributeName === 'value') {
+              console.log('fill password!', password, mutation.target.value, password !== mutation.target.value)
+              if (password !== mutation.target.value) {
+                this._fillCurrentPassword()
+              }
+            }
+          }
+        }
+      })
+
+      // 监听 value值
+      observer.observe(document.querySelector('form input'), {
+        attributes: true,
+      })
     }
 
     _saveCurrentPassword() {
@@ -153,5 +173,4 @@
   manager.init()
 
   manager._fillCurrentPassword()
-
 })()
