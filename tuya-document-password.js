@@ -118,6 +118,7 @@
 
       this.ui.initBtn('保存', this._saveCurrentPassword)
       this.ui.initBtn('复制密码', this._fillCurrentPassword)
+      this.ui.initBtn('导出JSON', this._exportJSON)
 
       const password = this.pm.getPassword(this.id)
 
@@ -140,6 +141,18 @@
       observer.observe(document.querySelector('form input'), {
         attributes: true,
       })
+    }
+
+    _exportJSON() {
+      const str = localStorage.getItem(password_key)
+      const blob = new Blob([str], {
+        type: 'application/json'
+      })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'password.json'
+      a.click()
     }
 
     _saveCurrentPassword() {
