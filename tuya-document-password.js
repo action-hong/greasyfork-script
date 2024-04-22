@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                涂鸦文档密码自动引入
 // @namespace           http://tampermonkey.net/
-// @version             0.0.3
+// @version             0.0.4
 // @description         英文简述
 // @author              kkopite
 // @match               https://wiki.tuyacn.com/share/doc/*
@@ -110,6 +110,7 @@
 
       this._saveCurrentPassword = this._saveCurrentPassword.bind(this)
       this._fillCurrentPassword = this._fillCurrentPassword.bind(this)
+      this._exportJSON = this._exportJSON.bind(this)
     }
 
     init() {
