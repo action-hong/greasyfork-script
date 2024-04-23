@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                涂鸦文档密码自动引入
 // @namespace           http://tampermonkey.net/
-// @version             0.0.4
+// @version             0.0.5
 // @description         英文简述
 // @author              kkopite
 // @match               https://wiki.tuyacn.com/share/doc/*
@@ -35,6 +35,28 @@
       console.log('当前存储的密码');
       console.log(JSON.stringify(this.passwords, null, 2))
     }
+    
+    merge(passwords) {
+      if (!Array.isArray(passwords)) {
+        console.warn('传入的密码不是数组', passwords)
+        return
+      }
+
+      // 合并
+      passwords.forEach(p => {
+        if (!p.id || !p.password) {
+          console.warn('该密码格式不对, 没有id或password', p)
+          return
+        }
+        const index = this.passwords.findIndex(a => a.id === p.id)
+        if (index !== -1) {
+          this.passwords[index] = p
+        } else {
+          this.passwords.push(p)
+        }
+      })
+      localStorage.setItem(password_key, JSON.stringify(this.passwords))
+    }
 
     save(obj) {
       const index = this.passwords.findIndex(a => a.id === obj.id)
@@ -67,6 +89,22 @@
       const btn = document.createElement('button')
       btn.innerText = name
       btn.addEventListener('click', onClick)
+      this.container.appendChild(btn)
+    }
+
+    addInput(name, onChange) {
+      const btn = document.createElement('button')
+      const id = Math.random().toString(36).slice(2)
+      const label = document.createElement('label')
+      label.htmlFor = id
+      label.innerText = name
+      const input = document.createElement('input')
+      input.id = id
+      input.type = 'file'
+      input.addEventListener('change', onChange)
+      input.style.display = 'none'
+      btn.appendChild(label)
+      btn.appendChild(input)
       this.container.appendChild(btn)
     }
 
@@ -117,9 +155,18 @@
       this.pm.init()
       this.ui.init()
 
-      this.ui.initBtn('保存', this._saveCurrentPassword)
+      this.ui.initBtn('保存密码', this._saveCurrentPassword)
       this.ui.initBtn('复制密码', this._fillCurrentPassword)
       this.ui.initBtn('导出JSON', this._exportJSON)
+      this.ui.addInput('导入JSON', (e) => {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const str = e.target.result
+          this.pm.merge(JSON.parse(str))
+        }
+        reader.readAsText(file)
+      })
 
       const password = this.pm.getPassword(this.id)
 
