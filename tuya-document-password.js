@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                涂鸦文档密码自动引入
 // @namespace           http://tampermonkey.net/
-// @version             0.0.5
+// @version             0.0.6
 // @description         英文简述
 // @author              kkopite
 // @match               https://wiki.tuyacn.com/share/doc/*
@@ -189,6 +189,12 @@
       observer.observe(document.querySelector('form input'), {
         attributes: true,
       })
+
+      // 监听按钮，手动将输入框密码输入
+      const btn = document.querySelector('form button')
+      btn.addEventListener('click', () => {
+        this._saveCurrentPassword()
+      })
     }
 
     _exportJSON() {
@@ -234,4 +240,4 @@
   manager.init()
 
   manager._fillCurrentPassword()
-})()
+})();
